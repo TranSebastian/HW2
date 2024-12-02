@@ -5,6 +5,8 @@ public class RottenApples {
     public static int rotten (int [] []  apples){
 
         LinkedList<int[]> queue = new LinkedList<>();
+        int [] [] distance = new int[apples.length][apples[0].length];
+
         for (int row = 0; row < apples.length; row++){
             for (int column = 0; column < apples[row].length; column++){
                 if (apples[row][column] == 0){
@@ -21,30 +23,34 @@ public class RottenApples {
 
             if (c-1 >= 0 && apples[r][c-1] == 1){
                 int [] arr = {r, c-1};
-                apples[r] [c-1] += 1;
+                distance[r][c-1] = distance[r][c] + 1;
+                apples[r][c-1] = 0;
                 queue.add(arr);
             }
 
             if (c+1 < apples[r].length && apples[r][c+1] == 1){
                 int [] arr = {r, c+1};
-                apples[r] [c+1] += 1;
+                distance[r][c+1] = distance[r][c] + 1;
+                apples[r][c+1] = 0;
                 queue.add(arr);
             }
 
             if (r-1 >= 0 && apples[r-1][c] == 1){
                 int [] arr = {r-1, c};
-                apples[r-1] [c] += 1;
+                distance[r-1][c] = distance[r][c] + 1;
+                apples[r-1][c] = 0;
                 queue.add(arr);
             }
 
             if (r+1 < apples.length && apples[r+1][c] == 1){
                 int [] arr = {r+1, c};
-                apples[r+1] [c] += 1;
+                distance[r+1][c] = distance[r][c] + 1;
+                apples[r+1][c] = 0;
                 queue.add(arr);
             }
 
             queue.pop();
-            time = 24*apples[r][c];
+            time = 24*distance[r][c];
         }
 
         int unrotten = 0;
@@ -57,7 +63,7 @@ public class RottenApples {
         }
 
         if (unrotten != 0){
-            System.out.println(unrotten);
+            System.out.println("Unrotten apples left: " + unrotten);
             return -1;
         }
         return time;
@@ -76,8 +82,17 @@ public class RottenApples {
             {0, -1, -1, 0, 1, 1, -1}
         };
 
-        System.out.println(rotten(apples1));
-        System.out.println(rotten(apples2));
+        int [] [] apples3 = {
+            {0, 1, -1, 0, 1},
+            {1, -1, 1, 0, 1},
+            {1, -1, -1, 0, 1}
+        };
+
+        System.out.println("Apple field one: ");
+        System.out.println("Time to take to rot all apples: " + rotten(apples1) + "\n");
+        System.out.println("Apple field two: ");
+        System.out.println("Time to take to rot all apples: " + rotten(apples2));
+        // System.out.println(rotten(apples3));
 
     }
 }
